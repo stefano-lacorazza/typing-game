@@ -1,29 +1,20 @@
-# README #
+# HTTP, REST, WebSockets
 
-This README would normally document whatever steps are necessary to get your application up and running.
+## 🏃‍♂️ Simple start
 
-### What is this repository for? ###
+1. **`npm install`** at the root
+2. **`npm run dev`** at the root
+3. open **`http://localhost:3001/`**
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+## 🧹 Code style
 
-### How do I get set up? ###
+Run **`npm run format:check`** at the root to check code style.
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Run **`npm run format:fix`** at the root to fix code style.
 
-### Contribution guidelines ###
+## 💡 PS
 
-* Writing tests
-* Code review
-* Other guidelines
+The project has a [Prettier](https://prettier.io/) set up, to validate your code.
+Please use it!
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+## 🤞 Good luck
