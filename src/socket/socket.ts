@@ -1,31 +1,24 @@
-import { Server } from 'socket.io';
-
+import { Server, Socket } from 'socket.io';
+import Room from '../models/room.js';
 import * as config from './config.js';
 
+const rooms: Room[] = [];
 
-const rooms = [];
-
-
-const getCurrentRoomId = socket => rooms.find(roomId => socket.rooms.has(roomId));
-
+// Assuming Room has an id of type string
+const getCurrentRoomId = (socket: Socket): string | undefined => 
+  rooms.find(room => socket.rooms.has(room.id))?.id;
 
 export default (io: Server) => {
-    io.on('connection', socket => {
-        const username = socket.handshake.query.username;
+  io.on('connection', (socket: Socket) => {
+    const username = socket.handshake.query.username as string;
 
+    socket.emit("UPDATE_ROOMS", rooms);
 
-        socket.emit("UPDATE_ROOMS", rooms);
-
-        socket.on("CREATE_ROOM", roomName => {
-            const roomId = `${roomName}-${Date.now()}`;
-            rooms.push(roomId);
-            socket.join(roomId);
-            io.emit("UPDATE_ROOMS", rooms);
-        }
-
-
-
-
-
-    });
+    socket.on("CREATE_ROOM", (roomName: string) => {
+      const room = new Room(roomName);
+      rooms.push(room);
+      socket.join(room.id);
+      io.emit("UPDATE_ROOMS", rooms);
+    }); 
+  });
 };

@@ -3,3 +3,9 @@ interface Room {
     numberOfPlayers: number;
     state: 'open' | 'closed';
   }
+
+
+
+
+
+export { Room };
