@@ -24,7 +24,7 @@ const onClickAddRoom = () => {
         onSubmit: roomName => {
             //create a new room element
             currentRoom = roomName;
-            onClickJoin();
+            onClickJoin(roomName);
             //TODO: enter room
 
             socket.emit("CREATE_ROOM",  roomName );
@@ -33,10 +33,17 @@ const onClickAddRoom = () => {
 
 }
 
+const changeRoomName = (roomName) => {
+    const roomNameElement = document.getElementById('room-name');
+    roomNameElement.textContent = roomName;
+}
+
 const onClickJoin = (roomid) => {
 
     removeRoomsPage();
     addGamePage();
+    changeRoomName(roomid);
+
     
 }
 
