@@ -16,7 +16,7 @@ export default (io: Server) => {
     socket.emit("UPDATE_ROOMS", rooms);
 
     socket.on("CREATE_ROOM", (roomName: string) => {
-      const room = new Room(roomName);
+      const room = new Room(roomName,1, 'open');
       rooms.push(room);
       socket.join(room.id);
       io.emit("UPDATE_ROOMS", rooms);
