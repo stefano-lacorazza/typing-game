@@ -2,6 +2,7 @@ import { Server, Socket } from 'socket.io';
 import Room from '../models/room.js';
 import * as config from './config.js';
 
+
 const rooms: Room[] = [];
 
 // Assuming Room has an id of type string
@@ -20,5 +21,14 @@ export default (io: Server) => {
       socket.join(room.id);
       io.emit("UPDATE_ROOMS", rooms);
     }); 
+
+    socket.on("JOIN_ROOM", (roomId: string) => {
+        const room = rooms.find(room => room.id === roomId);
+        if (room && room.numberOfPlayers < config.MAXIMUM_USERS_FOR_ONE_ROOM) {
+            room.numberOfPlayers++;
+            socket.join(room.id);
+            io.emit("UPDATE_ROOMS", rooms);
+        }
+        });
   });
 };
