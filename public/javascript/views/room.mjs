@@ -1,4 +1,7 @@
-import { createElement } from '../helpers/dom-helper.mjs';
+import { createElement, addClass, removeClass } from '../helpers/dom-helper.mjs';
+
+
+
 
 const appendRoomElement = ({ name, numberOfUsers, onJoin = () => {} }) => {
     const roomsContainer = document.querySelector('#rooms-wrapper');
@@ -38,18 +41,42 @@ const appendRoomElement = ({ name, numberOfUsers, onJoin = () => {} }) => {
 
     return roomElement;
 };
+
 const emptyRoomElement = () => {
     const roomsContainer = document.querySelector('#rooms-wrapper');
     roomsContainer.innerHTML = '';
 };
+
 const updateNumberOfUsersInRoom = ({ name, numberOfUsers }) => {
     const roomConnectedUsersElement = document.querySelector(`.connected-users[data-room-name='${name}']`);
     roomConnectedUsersElement.innerText = getNumberOfUsersString(numberOfUsers);
     roomConnectedUsersElement.dataset.roomNumberOfUsers = numberOfUsers;
 };
 
+function removeRoomsPage() {
+    const roomsPageElement = document.getElementById("rooms-page");
+    if (roomsPageElement) {
+        removeClass(roomsPageElement, 'full-screen');
+        addClass(roomsPageElement, 'display-none');
+        
+    } else {
+        console.error("Element with ID 'rooms-page' not found.");
+    }
+}
+
+const addGamePage = () => {
+    const gamePage = document.getElementById("game-page");
+    if (gamePage) {
+        removeClass(gamePage, 'display-none');
+        addClass(gamePage, 'full-screen');
+    }
+    else {
+        console.error("Element with ID 'game-page' not found.");
+    }
+}
+
 const getNumberOfUsersString = numberOfUsers => `${numberOfUsers} connected`;
 
 const removeRoomElement = name => document.querySelector(`.room[data-room-name='${name}']`)?.remove();
 
-export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement };
+export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage};

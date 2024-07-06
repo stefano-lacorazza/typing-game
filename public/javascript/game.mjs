@@ -1,4 +1,4 @@
-import { appendRoomElement, emptyRoomElement } from './views/room.mjs'
+import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage } from './views/room.mjs'
 import { showInputModal } from './views/modal.mjs'
 
 
@@ -8,6 +8,7 @@ const game_page = document.getElementById('game-page');
 const rooms_wrapper = document.getElementById('rooms-wrapper');
 const room_btn = document.getElementById('add-room-btn');
 
+let currentRoom = '';
 
 const socket = io('', { query: { username } });
 if (!username) {
@@ -22,7 +23,8 @@ const onClickAddRoom = () => {
         title: 'Enter room name',
         onSubmit: roomName => {
             //create a new room element
-
+            currentRoom = roomName;
+            onClickJoin();
             //TODO: enter room
 
             socket.emit("CREATE_ROOM",  roomName );
@@ -31,10 +33,22 @@ const onClickAddRoom = () => {
 
 }
 
+const onClickJoin = (roomid) => {
+
+    removeRoomsPage();
+    addGamePage();
+    
+}
+
+
+
 const updateRooms = rooms => {
     emptyRoomElement();
     rooms.forEach(room => {
-        appendRoomElement({ name: room.id, numberOfUsers: 1, onJoin: () => {} });
+        if (room.state == 'open')
+            appendRoomElement({ name: room.id, numberOfUsers: room.numberOfPlayers, onJoin: onClickJoin });
+
+        
     });
 };
 socket.on('UPDATE_ROOMS', updateRooms);
