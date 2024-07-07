@@ -10,6 +10,8 @@ const rooms_wrapper = document.getElementById('rooms-wrapper');
 const room_btn = document.getElementById('add-room-btn');
 
 let currentRoom = '';
+let text = '';
+let currentPosition = 0;
 
 const socket = io('', { query: { username } });
 if (!username) {
@@ -19,19 +21,14 @@ if (!username) {
 
 
 const onClickAddRoom = () => {
-    
     showInputModal({
         title: 'Enter room name',
         onSubmit: roomName => {
-            //create a new room element
             currentRoom = roomName;
             onClickJoin(roomName);
-            //TODO: enter room
-
             socket.emit("CREATE_ROOM",  roomName );
         }
     });
-
 }
 
 const changeRoomName = (roomName) => {
@@ -47,9 +44,6 @@ const onClickJoin = (roomid) => {
     addGamePage();
     changeRoomName(roomid);
     socket.emit('JOIN_ROOM', roomid);
-    
-
-    
 }
 
 const addBackToRoomsOnClick = () => {
@@ -104,9 +98,42 @@ const addReadyButtonOnClick = () => {
     });
 };
 
+const startGame = (randomText) => {
+    text = randomText;
+    activateKeyStrokes();
+
+};
+
+const activateKeyStrokes = () => {
+    document.addEventListener('keydown', (event) => {
+        console.log('event');
+        let total = text.length;
+        if (event.key === text[currentPosition]) { // Check if the pressed key matches the current character
+            currentPosition++; // Move to the next character
+
+            let percentage = Math.floor((currentPosition / total) * 100);
+
+            setProgress({ username: username, progress: percentage });
+            socket.emit('UPDATE_PROGRESS', percentage, username, currentRoom);
+
+            if (currentPosition >= text.length) {
+
+
+            } 
+        }
+    });
+};
+
+
+
 socket.on('UPDATE_PLAYERS', addUserElements);
 socket.on('UPDATE_ROOMS', updateRooms);
-socket.on('START_GAME', startCountdown);
+socket.on('START_GAME', (randomText) => {
+
+    //TODO: REFACTOR TO RECIEVE TEXT ID FROM SERVER AND GET TEXT FROM SERVER
+    startCountdown(randomText);
+    startGame(randomText); // Replace this with your second function's name
+});
 
 
 
