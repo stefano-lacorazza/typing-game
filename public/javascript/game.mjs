@@ -37,6 +37,7 @@ const onClickAddRoom = () => {
 const changeRoomName = (roomName) => {
     const roomNameElement = document.getElementById('room-name');
     roomNameElement.textContent = roomName;
+    addReadyButtonOnClick();
 }
 
 const onClickJoin = (roomid) => {
@@ -81,14 +82,14 @@ const addUserElements = users => {
         if (user.username === username) {
             appendUserElement({
                 username: user.username,
-                ready: false,
+                ready: user.ready,
                 isCurrentUser: true
             });
         }
         else{
             appendUserElement({
                 username: user.username,
-                ready: false,
+                ready: user.ready,
                 isCurrentUser: false,
             });
         }
@@ -96,6 +97,12 @@ const addUserElements = users => {
     });
 };
 
+const addReadyButtonOnClick = () => {
+    const readyButton = document.getElementById('ready-btn');
+    readyButton.addEventListener('click', () => {
+        socket.emit('TOGGLE_READY', username, currentRoom);
+    });
+};
 
 socket.on('UPDATE_PLAYERS', addUserElements);
 socket.on('UPDATE_ROOMS', updateRooms);

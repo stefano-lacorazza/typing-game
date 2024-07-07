@@ -50,4 +50,21 @@ export default (io: Server) => {
             io.emit("UPDATE_ROOMS", rooms);
         }
       });
+
+
+
+
+    socket.on('TOGGLE_READY', (username: string, roomId : string) => {
+        const room = rooms.find(room => room.id === roomId);
+        if (room) {
+          const player = room.playerList.find(player => player.username === username);
+          if (player)
+          {
+            player.toggleReady();
+            io.to(room.id).emit("UPDATE_PLAYERS", room.playerList);
+          }
+           
+        }
+
+      });
 })};
