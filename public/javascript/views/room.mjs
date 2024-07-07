@@ -53,6 +53,19 @@ const updateNumberOfUsersInRoom = ({ name, numberOfUsers }) => {
     roomConnectedUsersElement.dataset.roomNumberOfUsers = numberOfUsers;
 };
 
+const addRoomsPage = () => {
+    const roomsPageElement = document.getElementById("rooms-page");
+    if (roomsPageElement) {
+        removeClass(roomsPageElement, 'display-none');
+        addClass(roomsPageElement, 'full-screen');
+    } else {
+        console.error("Element with ID 'rooms-page' not found.");
+    }
+
+
+}
+
+
 function removeRoomsPage() {
     const roomsPageElement = document.getElementById("rooms-page");
     if (roomsPageElement) {
@@ -75,8 +88,16 @@ const addGamePage = () => {
     }
 }
 
+const removeGamePage = () => {
+    const gamePage = document.getElementById("game-page");
+    if (gamePage) {
+        removeClass(gamePage, 'full-screen');
+        addClass(gamePage, 'display-none');
+    }
+}
+
 const getNumberOfUsersString = numberOfUsers => `${numberOfUsers} connected`;
 
 const removeRoomElement = name => document.querySelector(`.room[data-room-name='${name}']`)?.remove();
 
-export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage};
+export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage};

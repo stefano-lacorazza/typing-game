@@ -1,4 +1,4 @@
-import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage } from './views/room.mjs'
+import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage } from './views/room.mjs'
 import { showInputModal } from './views/modal.mjs'
 
 
@@ -39,7 +39,8 @@ const changeRoomName = (roomName) => {
 }
 
 const onClickJoin = (roomid) => {
-
+    currentRoom = roomid;
+    addBackToRoomsOnClick();
     removeRoomsPage();
     addGamePage();
     changeRoomName(roomid);
@@ -47,17 +48,29 @@ const onClickJoin = (roomid) => {
     
 }
 
+const addBackToRoomsOnClick = () => {
+    const backToRoomsButton = document.getElementById('quit-room-btn');
+    backToRoomsButton.addEventListener('click', () => {
+        removeGamePage();
+        addRoomsPage();
+    });
 
+}
 
 const updateRooms = rooms => {
     emptyRoomElement();
     rooms.forEach(room => {
         if (room.state == 'open')
-            appendRoomElement({ name: room.id, numberOfUsers: room.numberOfPlayers, onJoin: onClickJoin });
-
-        
+            appendRoomElement({ 
+                name: room.id, 
+                numberOfUsers: room.numberOfPlayers, 
+                onJoin: () => onClickJoin(room.id) // Pass room.id to onClickJoin
+            });
     });
 };
+
+
+
 socket.on('UPDATE_ROOMS', updateRooms);
 
 room_btn.addEventListener('click', onClickAddRoom);
