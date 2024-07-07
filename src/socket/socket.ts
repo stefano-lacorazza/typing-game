@@ -23,12 +23,25 @@ export default (io: Server) => {
     }); 
 
     socket.on("JOIN_ROOM", (roomId: string) => {
-        const room = rooms.find(room => room.id === roomId);
-        if (room && room.numberOfPlayers < config.MAXIMUM_USERS_FOR_ONE_ROOM) {
-            room.numberOfPlayers++;
+      const room = rooms.find(room => room.id === roomId);
+      console.log(`User ${username} trying to join room ${roomId}`);
+      if (room) {
+            room.addPlayer();
+            io.emit("UPDATE_ROOMS", rooms);
             socket.join(room.id);
+            console.log(`User ${username} joined room ${room.id}`);
+        }
+    });
+
+    socket.on("LEAVE_ROOM", (roomId: string) => {
+        const room = rooms.find(room => room.id === roomId);
+        if (room) {
+            room.OneLessPlayer();
+            socket.leave(room.id);
+            if (room.numberOfPlayers === 0) {
+                rooms.splice(rooms.indexOf(room), 1);
+            }
             io.emit("UPDATE_ROOMS", rooms);
         }
-        });
-  });
-};
+      });
+})};

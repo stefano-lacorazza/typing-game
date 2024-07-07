@@ -44,6 +44,7 @@ const onClickJoin = (roomid) => {
     removeRoomsPage();
     addGamePage();
     changeRoomName(roomid);
+    socket.emit('JOIN_ROOM', roomid);
 
     
 }
@@ -51,6 +52,8 @@ const onClickJoin = (roomid) => {
 const addBackToRoomsOnClick = () => {
     const backToRoomsButton = document.getElementById('quit-room-btn');
     backToRoomsButton.addEventListener('click', () => {
+        socket.emit('LEAVE_ROOM', currentRoom);
+        currentRoom = '';
         removeGamePage();
         addRoomsPage();
     });
@@ -66,6 +69,7 @@ const updateRooms = rooms => {
                 numberOfUsers: room.numberOfPlayers, 
                 onJoin: () => onClickJoin(room.id) // Pass room.id to onClickJoin
             });
+        console.log(room);
     });
 };
 

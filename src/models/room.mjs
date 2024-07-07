@@ -5,7 +5,7 @@ class Room {
       this.state = state;
   }
 
-  OneMorePlayer() {
+  addPlayer() {
       this.numberOfPlayers += 1;
       if (this.numberOfPlayers >= 3) {
           this.state = 'closed';
