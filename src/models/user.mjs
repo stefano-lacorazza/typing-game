@@ -5,3 +5,5 @@ class User {
         this.keys = 0;
     }
 }
+
+export { User }

@@ -78,16 +78,16 @@ const updateRooms = rooms => {
 const addUserElements = users => {
     emptyUserElement();
     users.forEach(user => {
-        if (user === username) {
+        if (user.username === username) {
             appendUserElement({
-                username: user,
+                username: user.username,
                 ready: false,
                 isCurrentUser: true
             });
         }
         else{
             appendUserElement({
-                username: user,
+                username: user.username,
                 ready: false,
                 isCurrentUser: false,
             });
