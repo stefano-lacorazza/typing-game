@@ -1,4 +1,4 @@
-import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown, highlightText } from './views/room.mjs'
+import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown, highlightText, addTimeRemaining } from './views/room.mjs'
 import { showInputModal } from './views/modal.mjs'
 import { appendUserElement, changeReadyStatus, setProgress, removeUserElement, emptyUserElement } from './views/user.mjs'
 
@@ -101,6 +101,7 @@ const addReadyButtonOnClick = () => {
 const startGame = (randomText) => {
     text = randomText;
     activateKeyStrokes();
+    addTimeRemaining();
 
 };
 
@@ -139,7 +140,7 @@ socket.on('START_GAME', (randomText) => {
 
     //TODO: REFACTOR TO RECIEVE TEXT ID FROM SERVER AND GET TEXT FROM SERVER
     startCountdown(randomText);
-    startGame(randomText); // Replace this with your second function's name
+    setTimeout(() => startGame(randomText), 6000); 
 });
 socket.on("UPDATE_PROGRESS_RESPONSE", updateProgressAll);
 
