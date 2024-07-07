@@ -3,6 +3,7 @@ class Room {
       this.id = id;
       this.numberOfPlayers = numberOfPlayers;
       this.state = state;
+      this.playerList = [];
   }
 
   addPlayer() {
@@ -28,7 +29,12 @@ class Room {
   close() {
       this.state = 'closed';
   }
-
+  appendUsertoList (user){
+    this.playerList.push(user)
+  }
+  removeUserfromList(user){
+    this.playerList = this.playerList.filter((player) => player !== user)
+  }
 
 }
   

@@ -17,6 +17,7 @@ export default (io: Server) => {
 
     socket.on("CREATE_ROOM", (roomName: string) => {
       const room = new Room(roomName,1, 'open');
+      room.appendUsertoList(username)
       rooms.push(room);
       socket.join(room.id);
       io.emit("UPDATE_ROOMS", rooms);
@@ -28,6 +29,7 @@ export default (io: Server) => {
       if (room) {
             room.addPlayer();
             io.emit("UPDATE_ROOMS", rooms);
+            room.appendUsertoList(username)
             socket.join(room.id);
             console.log(`User ${username} joined room ${room.id}`);
         }
@@ -37,6 +39,7 @@ export default (io: Server) => {
         const room = rooms.find(room => room.id === roomId);
         if (room) {
             room.OneLessPlayer();
+            room.removeUserfromList(username)
             socket.leave(room.id);
             if (room.numberOfPlayers === 0) {
                 rooms.splice(rooms.indexOf(room), 1);
@@ -44,4 +47,12 @@ export default (io: Server) => {
             io.emit("UPDATE_ROOMS", rooms);
         }
       });
+
+      
+
+
+
+
+
+
 })};
