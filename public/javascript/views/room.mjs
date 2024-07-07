@@ -113,8 +113,14 @@ const startCountdown = ( randomText ) => {
         time--;
         if (time < 0) {
             clearInterval(countdown);
+
             addClass(countdownElement, 'display-none');
-            insertRandomText(randomText);
+            insertRandomText("START WRITING...")
+            // one second delay
+            setTimeout(() => {
+                insertRandomText(randomText);
+            }, 1000);
+            
         }
     }, 1000);
 

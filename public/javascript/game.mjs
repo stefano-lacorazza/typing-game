@@ -113,7 +113,8 @@ const activateKeyStrokes = () => {
 
             let percentage = Math.floor((currentPosition / total) * 100);
             highlightText(currentPosition);
-            setProgress({ username: username, progress: percentage });
+
+
             socket.emit('UPDATE_PROGRESS', percentage, username, currentRoom);
 
             if (currentPosition >= text.length) {
@@ -124,6 +125,12 @@ const activateKeyStrokes = () => {
     });
 };
 
+const updateProgressAll = (users) => {
+    users.forEach(user => {
+        setProgress({ username: user.username, progress: user.progress });
+    });
+
+};
 
 
 socket.on('UPDATE_PLAYERS', addUserElements);
@@ -134,6 +141,7 @@ socket.on('START_GAME', (randomText) => {
     startCountdown(randomText);
     startGame(randomText); // Replace this with your second function's name
 });
+socket.on("UPDATE_PROGRESS_RESPONSE", updateProgressAll);
 
 
 

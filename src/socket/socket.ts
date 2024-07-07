@@ -69,6 +69,20 @@ export default (io: Server) => {
         }
 
       });
+
+    socket.on('UPDATE_PROGRESS', (percentage: number, username: string, roomId: string) => {
+
+      const room = rooms.find(room => room.id === roomId);
+      if (room) {
+
+        const player = room.playerList.find(player => player.username === username);
+
+        if (player) {
+          player.updateProgress(percentage);
+          io.to(room.id).emit("UPDATE_PROGRESS_RESPONSE", room.playerList);
+        }
+      }
+    });
 })};
 
 
