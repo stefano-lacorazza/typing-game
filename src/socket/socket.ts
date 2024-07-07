@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import Room from '../models/room.mjs';
 import * as config from './config.js';
-
+import { texts } from '../data.js';
 
 const rooms: Room[] = [];
 
@@ -64,9 +64,14 @@ export default (io: Server) => {
             io.to(room.id).emit("UPDATE_PLAYERS", room.playerList);
           }
            if (room.allUsersReady() && room.numberOfPlayers > 1 ) {
-            io.to(room.id).emit("START_GAME");
+            io.to(room.id).emit("START_GAME", randomText());
            }
         }
 
       });
 })};
+
+
+const randomText = () => {
+  return texts[Math.floor(Math.random() * texts.length)];
+}

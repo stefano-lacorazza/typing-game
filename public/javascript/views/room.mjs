@@ -97,7 +97,7 @@ const removeGamePage = () => {
 }
 
 
-const startCountdown = () => {
+const startCountdown = ( randomText ) => {
 
     const countdownElement = document.getElementById("game-timer");
     const readybtn = document.getElementById("ready-btn");
@@ -114,11 +114,18 @@ const startCountdown = () => {
         if (time < 0) {
             clearInterval(countdown);
             addClass(countdownElement, 'display-none');
+            insertRandomText(randomText);
         }
     }, 1000);
 
 
 
+}
+
+const insertRandomText = (randomText) => {
+    const randomTextElement = document.getElementById("text-container");
+    removeClass(randomTextElement, 'display-none');
+    randomTextElement.innerText = randomText;
 }
 
 const getNumberOfUsersString = numberOfUsers => `${numberOfUsers} connected`;
