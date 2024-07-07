@@ -1,5 +1,6 @@
-import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage } from './views/room.mjs'
+import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown } from './views/room.mjs'
 import { showInputModal } from './views/modal.mjs'
+import { appendUserElement, changeReadyStatus, setProgress, removeUserElement, emptyUserElement } from './views/user.mjs'
 
 
 const username = sessionStorage.getItem('username');
@@ -36,6 +37,7 @@ const onClickAddRoom = () => {
 const changeRoomName = (roomName) => {
     const roomNameElement = document.getElementById('room-name');
     roomNameElement.textContent = roomName;
+    addReadyButtonOnClick();
 }
 
 const onClickJoin = (roomid) => {
@@ -45,6 +47,7 @@ const onClickJoin = (roomid) => {
     addGamePage();
     changeRoomName(roomid);
     socket.emit('JOIN_ROOM', roomid);
+    
 
     
 }
@@ -73,9 +76,39 @@ const updateRooms = rooms => {
     });
 };
 
+const addUserElements = users => {
+    emptyUserElement();
+    users.forEach(user => {
+        if (user.username === username) {
+            appendUserElement({
+                username: user.username,
+                ready: user.ready,
+                isCurrentUser: true
+            });
+        }
+        else{
+            appendUserElement({
+                username: user.username,
+                ready: user.ready,
+                isCurrentUser: false,
+            });
+        }
+        
+    });
+};
 
+const addReadyButtonOnClick = () => {
+    const readyButton = document.getElementById('ready-btn');
+    readyButton.addEventListener('click', () => {
+        socket.emit('TOGGLE_READY', username, currentRoom);
+    });
+};
 
+socket.on('UPDATE_PLAYERS', addUserElements);
 socket.on('UPDATE_ROOMS', updateRooms);
+socket.on('START_GAME', startCountdown);
+
+
 
 room_btn.addEventListener('click', onClickAddRoom);
 
