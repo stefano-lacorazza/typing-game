@@ -1,4 +1,4 @@
-import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown } from './views/room.mjs'
+import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown, highlightText } from './views/room.mjs'
 import { showInputModal } from './views/modal.mjs'
 import { appendUserElement, changeReadyStatus, setProgress, removeUserElement, emptyUserElement } from './views/user.mjs'
 
@@ -112,7 +112,7 @@ const activateKeyStrokes = () => {
             currentPosition++; // Move to the next character
 
             let percentage = Math.floor((currentPosition / total) * 100);
-
+            highlightText(currentPosition);
             setProgress({ username: username, progress: percentage });
             socket.emit('UPDATE_PROGRESS', percentage, username, currentRoom);
 

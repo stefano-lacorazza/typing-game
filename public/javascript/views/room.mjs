@@ -128,8 +128,18 @@ const insertRandomText = (randomText) => {
     randomTextElement.innerText = randomText;
 }
 
+const highlightText = (currentPosition) => {
+    const randomTextElement = document.getElementById("text-container");
+    const text = randomTextElement.innerText;
+    let beforeText = text.substring(0, currentPosition);
+    const afterText = text.substring(currentPosition);
+    beforeText = `<span class="highlight">${beforeText}</span>`;
+    
+    randomTextElement.innerHTML = beforeText + afterText;
+}
+
 const getNumberOfUsersString = numberOfUsers => `${numberOfUsers} connected`;
 
 const removeRoomElement = name => document.querySelector(`.room[data-room-name='${name}']`)?.remove();
 
-export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage, startCountdown};
+export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage, startCountdown, highlightText};
