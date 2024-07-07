@@ -81,14 +81,14 @@ const addUserElements = users => {
         if (user === username) {
             appendUserElement({
                 username: user,
-                ready: true,
+                ready: false,
                 isCurrentUser: true
             });
         }
         else{
             appendUserElement({
-                username: user.username,
-                ready: user.ready,
+                username: user,
+                ready: false,
                 isCurrentUser: false,
             });
         }
