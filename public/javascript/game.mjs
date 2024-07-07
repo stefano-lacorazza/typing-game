@@ -1,4 +1,4 @@
-import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage } from './views/room.mjs'
+import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown } from './views/room.mjs'
 import { showInputModal } from './views/modal.mjs'
 import { appendUserElement, changeReadyStatus, setProgress, removeUserElement, emptyUserElement } from './views/user.mjs'
 
@@ -106,6 +106,9 @@ const addReadyButtonOnClick = () => {
 
 socket.on('UPDATE_PLAYERS', addUserElements);
 socket.on('UPDATE_ROOMS', updateRooms);
+socket.on('START_GAME', startCountdown);
+
+
 
 room_btn.addEventListener('click', onClickAddRoom);
 

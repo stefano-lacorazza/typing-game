@@ -63,7 +63,9 @@ export default (io: Server) => {
             player.toggleReady();
             io.to(room.id).emit("UPDATE_PLAYERS", room.playerList);
           }
-           
+           if (room.allUsersReady() && room.numberOfPlayers > 1 ) {
+            io.to(room.id).emit("START_GAME");
+           }
         }
 
       });

@@ -37,6 +37,10 @@ class Room {
     this.playerList = this.playerList.filter((player) => player.username !== user)
   }
 
+
+  allUsersReady() {
+      return this.playerList.every(player => player.ready);
+  }
 }
   
 

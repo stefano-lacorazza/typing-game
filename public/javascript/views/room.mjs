@@ -96,8 +96,33 @@ const removeGamePage = () => {
     }
 }
 
+
+const startCountdown = () => {
+
+    const countdownElement = document.getElementById("game-timer");
+    const readybtn = document.getElementById("ready-btn");
+    const timer = document.getElementById("game-timer-seconds");
+
+    removeClass(countdownElement, 'display-none');
+    addClass(readybtn, 'display-none');
+    
+    let time = 5;
+    // Update the count down every 1 second
+    const countdown = setInterval(() => {
+        timer.innerText = time;
+        time--;
+        if (time < 0) {
+            clearInterval(countdown);
+            addClass(countdownElement, 'display-none');
+        }
+    }, 1000);
+
+
+
+}
+
 const getNumberOfUsersString = numberOfUsers => `${numberOfUsers} connected`;
 
 const removeRoomElement = name => document.querySelector(`.room[data-room-name='${name}']`)?.remove();
 
-export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage};
+export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage, startCountdown};
