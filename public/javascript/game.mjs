@@ -1,6 +1,6 @@
 import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage } from './views/room.mjs'
 import { showInputModal } from './views/modal.mjs'
-import { appendUserElement, changeReadyStatus, setProgress, removeUserElement } from './views/user.mjs'
+import { appendUserElement, changeReadyStatus, setProgress, removeUserElement, emptyUserElement } from './views/user.mjs'
 
 
 const username = sessionStorage.getItem('username');
@@ -76,6 +76,7 @@ const updateRooms = rooms => {
 };
 
 const addUserElements = users => {
+    emptyUserElement();
     users.forEach(user => {
         if (user === username) {
             appendUserElement({
@@ -95,6 +96,8 @@ const addUserElements = users => {
     });
 };
 
+
+socket.on('UPDATE_PLAYERS', addUserElements);
 socket.on('UPDATE_ROOMS', updateRooms);
 
 room_btn.addEventListener('click', onClickAddRoom);

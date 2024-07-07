@@ -48,6 +48,11 @@ const appendUserElement = ({ username, ready, isCurrentUser }) => {
     return userElement;
 };
 
+const emptyUserElement = () => {
+    const usersContainer = document.querySelector('#users-wrapper');
+    usersContainer.innerHTML = '';
+};
+
 const changeReadyStatus = ({ username, ready }) => {
     const readyStatusElement = document.querySelector(`.ready-status[data-username='${username}']`);
     readyStatusElement.innerHTML = getReadySign(ready);
@@ -69,4 +74,4 @@ const removeUserElement = username => document.querySelector(`.user[data-usernam
 
 const getReadySign = ready => (ready ? '🟢' : '🔴');
 
-export { appendUserElement, changeReadyStatus, setProgress, removeUserElement };
+export { appendUserElement, changeReadyStatus, setProgress, removeUserElement,emptyUserElement };

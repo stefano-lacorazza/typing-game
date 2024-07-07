@@ -1,9 +1,9 @@
 class Room {
-  constructor(id, numberOfPlayers = 1, state = 'open') {
+  constructor(id, numberOfPlayers = 1, state = 'open', username) {
       this.id = id;
       this.numberOfPlayers = numberOfPlayers;
       this.state = state;
-      this.playerList = [];
+      this.playerList = [username];
   }
 
   addPlayer() {
@@ -32,7 +32,7 @@ class Room {
   appendUsertoList (user){
     this.playerList.push(user)
   }
-  removeUserfromList(user){
+  removeUserFromList(user){
     this.playerList = this.playerList.filter((player) => player !== user)
   }
 
