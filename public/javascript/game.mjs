@@ -216,6 +216,12 @@ socket.on('START_GAME', (randomText) => {
 });
 socket.on("UPDATE_PROGRESS_RESPONSE", updateProgressAll);
 socket.on('GAME_OVER', endGame);
+socket.on('USERNAME_ALREADY_EXISTS', () => {sessionStorage.clear();
+    
+    
+    showMessageModal({ message: 'Username already exists' , onClose : () => {window.location.replace('/signin');}});
+});
+
 
 
 

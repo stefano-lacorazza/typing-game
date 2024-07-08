@@ -5,15 +5,21 @@ import { texts } from '../data.js';
 
 const rooms: Room[] = [];
 
-// Assuming Room has an id of type string
-const getCurrentRoomId = (socket: Socket): string | undefined => 
-  rooms.find(room => socket.rooms.has(room.id))?.id;
+const connectedUsers: string[] = [];
 
 
 export default (io: Server) => {
   io.on('connection', (socket: Socket) => {
     const username = socket.handshake.query.username as string;
     
+    if (connectedUsers.includes(username)) {
+      socket.emit("USERNAME_ALREADY_EXISTS");
+      console.log(username+" user already connected"+socket.id);
+    }
+    else {
+      connectedUsers.push(username);
+      console.log(username+" connected"+socket.id);
+    }
     socket.emit("INITIAL_CONFIG", { MAXIMUM_USERS_FOR_ONE_ROOM: config.MAXIMUM_USERS_FOR_ONE_ROOM, SECONDS_TIMER_BEFORE_START_GAME: config.SECONDS_TIMER_BEFORE_START_GAME, SECONDS_FOR_GAME: config.SECONDS_FOR_GAME});
 
     socket.emit("UPDATE_ROOMS", rooms);
@@ -138,6 +144,7 @@ export default (io: Server) => {
     });
     socket.on('disconnect', () => {
      //find room with user
+      connectedUsers.splice(connectedUsers.indexOf(username), 1);
       const roomId = rooms.find(room => room.isUserInRoom(username));
       if (roomId) {
         const room = rooms.find(room => room.id === roomId.id);
