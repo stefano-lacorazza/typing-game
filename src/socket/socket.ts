@@ -47,6 +47,7 @@ export default (io: Server) => {
             if (room.numberOfPlayers === 0) {
                 rooms.splice(rooms.indexOf(room), 1);
             }
+            room.removeWinner(username);
             io.emit("UPDATE_ROOMS", rooms);
         }
       });
@@ -92,7 +93,7 @@ export default (io: Server) => {
             room.playerList.forEach(player => {
                 player.resetProgress();
                 player.toggleReady();
-                
+                room.emptyWinnerList();
             });
             io.to(room.id).emit("UPDATE_PLAYERS", room.playerList);
             io.to(room.id).emit("UPDATE_PROGRESS_RESPONSE", room.playerList);
@@ -100,7 +101,18 @@ export default (io: Server) => {
         
     });
 
+    socket.on('FINISHED', (username: string, roomId: string) => {
+        const room = rooms.find(room => room.id === roomId);
+        if (room) {
+            room.addWinner(username);
+            if (room.winnerList.length === room.numberOfPlayers) {
+              console.log(room.winnerList)
+                io.to(room.id).emit("GAME_OVER", room.winnerList);
+            }
 
+        }
+
+    });
 
 
 

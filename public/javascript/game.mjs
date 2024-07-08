@@ -1,5 +1,5 @@
 import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown, highlightText,restartGamePage } from './views/room.mjs'
-import { showInputModal } from './views/modal.mjs'
+import { showInputModal, showResultsModal } from './views/modal.mjs'
 import { appendUserElement, changeReadyStatus, setProgress, removeUserElement, emptyUserElement } from './views/user.mjs'
 import { createElement, addClass, removeClass } from './helpers/dom-helper.mjs'
 
@@ -118,8 +118,9 @@ const activateKeyStrokes = () => {
 
             socket.emit('UPDATE_PROGRESS', percentage, username, currentRoom);
 
-            if (currentPosition >= text.length) {
-
+            if (percentage == 100) {
+                //end keydown event
+                socket.emit('FINISHED', username, currentRoom);
 
             } 
         }
@@ -130,25 +131,29 @@ const updateProgressAll = (users) => {
     users.forEach(user => {
         setProgress({ username: user.username, progress: user.progress });
     });
+    
 
-    if (users.every(user => user.progress === 100)) {
-        endGame();
-    }
 
 };
 
-const endGame = () => {
+const endGame = (winnerList) => {
     document.removeEventListener('keydown', activateKeyStrokes);
     currentPosition = 0;
     text = '';
 
-    
+    if (!winnerList) {
+        winnerList = ['No winner']
+    }
     //show modal window
+    showResultsModal({ usersSortedArray : winnerList, onClose : () => {
+        socket.emit('END_GAME', currentRoom); //TODO: unready everyone and restart progress
+        restartGamePage();
+
+    } })
 
     
-    console.log('end game'+currentRoom);
-    socket.emit('END_GAME', currentRoom); //TODO: unready everyone and restart progress
-    restartGamePage();
+
+
 
 
 };
@@ -158,7 +163,7 @@ const endGame = () => {
 
 
 const addTimeRemaining = () => {
-    let time = 10;
+    let time = 120;
     const gameTimer = document.getElementById("game-timer");
     const timer = document.getElementById("game-timer-seconds");
     timer.innerText = time;
@@ -201,7 +206,7 @@ socket.on('START_GAME', (randomText) => {
     setTimeout(() => startGame(randomText), 6000); 
 });
 socket.on("UPDATE_PROGRESS_RESPONSE", updateProgressAll);
-
+socket.on('GAME_OVER', endGame);
 
 
 room_btn.addEventListener('click', onClickAddRoom);

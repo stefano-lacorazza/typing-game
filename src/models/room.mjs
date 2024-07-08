@@ -5,6 +5,7 @@ class Room {
       this.numberOfPlayers = numberOfPlayers;
       this.state = state;
       this.playerList = [new User(username)];
+      this.winnerList = [];
   }
 
   addPlayer() {
@@ -40,6 +41,23 @@ class Room {
 
   allUsersReady() {
       return this.playerList.every(player => player.ready);
+  }
+
+  addWinner(winner) {
+    // add winner to list of not already in list
+    if (!this.winnerList.includes(winner))
+    {
+        this.winnerList.push(winner);
+    }
+     
+  }
+
+  removeWinner(winner) {
+      this.winnerList = this.winnerList.filter((player) => player.id !== winner);
+  }
+
+  emptyWinnerList() {
+      this.winnerList = [];
   }
 }
   
