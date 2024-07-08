@@ -76,3 +76,7 @@
 .highlight {
     background-color: yellow !important;
 }
+
+.underline {
+    text-decoration: underline;
+}

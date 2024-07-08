@@ -155,10 +155,17 @@ const highlightText = (currentPosition) => {
     const randomTextElement = document.getElementById("text-container");
     const text = randomTextElement.innerText;
     let beforeText = text.substring(0, currentPosition);
-    const afterText = text.substring(currentPosition);
+    let currentPositionChar = text.charAt(currentPosition);
+    const afterText = text.substring(currentPosition+1);
+
+    //underline the first character of currentPositionChar
+
+    currentPositionChar = `<span class="underline">${currentPositionChar}</span>`;
+
+
     beforeText = `<span class="highlight">${beforeText}</span>`;
     
-    randomTextElement.innerHTML = beforeText + afterText;
+    randomTextElement.innerHTML = beforeText + currentPositionChar + afterText;
 }
 
 
