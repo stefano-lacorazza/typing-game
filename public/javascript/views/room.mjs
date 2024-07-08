@@ -100,6 +100,7 @@ const startCountdown = ( randomText ) => {
     
     const readybtn = document.getElementById("ready-btn");
     const timer = document.getElementById("timer");
+    const beepSound = new Audio('../../audio/mariostart.mp3');
 
     removeClass(timer, 'display-none');
     addClass(readybtn, 'display-none');
@@ -109,6 +110,10 @@ const startCountdown = ( randomText ) => {
     const countdown = setInterval(() => {
         timer.innerText = time;
         time--;
+        if (time < 3) {
+            beepSound.play();
+
+        }
         if (time < 0) {
             clearInterval(countdown);
 
@@ -160,6 +165,7 @@ const toggleReadyButton = () => {
     const readybtn = document.getElementById("ready-btn");
     const readybtnText = readybtn.innerText;
     if (readybtnText === "READY") {
+        
         readybtn.innerText = "UNREADY";
     }
     else {
