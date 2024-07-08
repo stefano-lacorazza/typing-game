@@ -1,12 +1,11 @@
-import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown, highlightText,restartGamePage } from './views/room.mjs'
+import { appendRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown, highlightText,restartGamePage,toggleReadyButton } from './views/room.mjs'
 import { showInputModal, showResultsModal } from './views/modal.mjs'
-import { appendUserElement, changeReadyStatus, setProgress, removeUserElement, emptyUserElement } from './views/user.mjs'
-import { createElement, addClass, removeClass } from './helpers/dom-helper.mjs'
+import { appendUserElement, setProgress,  emptyUserElement } from './views/user.mjs'
+import { removeClass } from './helpers/dom-helper.mjs'
+
+
 
 const username = sessionStorage.getItem('username');
-const rooms_page = document.getElementById('rooms-page');
-const game_page = document.getElementById('game-page');
-const rooms_wrapper = document.getElementById('rooms-wrapper');
 const room_btn = document.getElementById('add-room-btn');
 
 let currentRoom = '';
@@ -94,6 +93,11 @@ const addUserElements = users => {
 const addReadyButtonOnClick = () => {
     const readyButton = document.getElementById('ready-btn');
     readyButton.addEventListener('click', () => {
+
+        toggleReadyButton();
+
+
+
         socket.emit('TOGGLE_READY', username, currentRoom);
     });
 };

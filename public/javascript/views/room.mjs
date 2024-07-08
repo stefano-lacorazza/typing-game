@@ -168,6 +168,16 @@ const highlightText = (currentPosition) => {
     randomTextElement.innerHTML = beforeText + currentPositionChar + afterText;
 }
 
+const toggleReadyButton = () => {
+    const readybtn = document.getElementById("ready-btn");
+    const readybtnText = readybtn.innerText;
+    if (readybtnText === "READY") {
+        readybtn.innerText = "UNREADY";
+    }
+    else {
+        readybtn.innerText = "READY";
+    }
+}
 
 
 
@@ -175,4 +185,4 @@ const getNumberOfUsersString = numberOfUsers => `${numberOfUsers} connected`;
 
 const removeRoomElement = name => document.querySelector(`.room[data-room-name='${name}']`)?.remove();
 
-export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage, startCountdown, highlightText, restartGamePage };
+export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage, startCountdown, highlightText, restartGamePage, toggleReadyButton };
