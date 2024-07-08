@@ -4,7 +4,7 @@ class Room {
       this.id = id;
       this.numberOfPlayers = numberOfPlayers;
       this.state = state;
-      this.playerList = [new User(username)];
+      this.playerList = [];
       this.winnerList = [];
   }
 

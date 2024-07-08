@@ -17,11 +17,23 @@ export default (io: Server) => {
     socket.emit("UPDATE_ROOMS", rooms);
 
     socket.on("CREATE_ROOM", (roomName: string) => {
-      const room = new Room(roomName,1, 'open', username);
-      rooms.push(room);
-      socket.join(room.id);
-      io.to(room.id).emit("UPDATE_PLAYERS", room.playerList);
-      io.emit("UPDATE_ROOMS", rooms);
+
+      //check if room already exists
+      const room2 = rooms.find(room => room.id === roomName);
+      if (room2)
+      {
+        socket.emit('ROOM_NOT_CREATED');
+      }
+      else {
+        const room = new Room(roomName,0, 'open', username);
+        rooms.push(room);
+        socket.join(room.id);
+        socket.emit('ROOM_CREATED', room.id);
+        io.to(room.id).emit("UPDATE_PLAYERS", room.playerList);
+        io.emit("UPDATE_ROOMS", rooms);
+      }
+
+
 
     }); 
 

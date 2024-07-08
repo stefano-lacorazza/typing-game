@@ -1,5 +1,5 @@
 import { appendRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown, highlightText,restartGamePage,toggleReadyButton } from './views/room.mjs'
-import { showInputModal, showResultsModal } from './views/modal.mjs'
+import { showInputModal, showMessageModal, showResultsModal } from './views/modal.mjs'
 import { appendUserElement, setProgress,  emptyUserElement } from './views/user.mjs'
 import { removeClass } from './helpers/dom-helper.mjs'
 
@@ -23,8 +23,6 @@ const onClickAddRoom = () => {
     showInputModal({
         title: 'Enter room name',
         onSubmit: roomName => {
-            currentRoom = roomName;
-            onClickJoin(roomName);
             socket.emit("CREATE_ROOM",  roomName );
         }
     });
@@ -155,14 +153,7 @@ const endGame = (winnerList) => {
 
     } })
 
-    
-
-
-
-
 };
-
-
 
 
 
@@ -203,6 +194,13 @@ const leaveRoom = () => {
 
 socket.on('UPDATE_PLAYERS', addUserElements);
 socket.on('UPDATE_ROOMS', updateRooms);
+socket.on('ROOM_CREATED', (roomName) => {
+    currentRoom = roomName;
+    onClickJoin(roomName);
+});
+socket.on('ROOM_NOT_CREATED', () => {
+    showMessageModal({ message: 'Room already exists' });
+});
 socket.on('START_GAME', (randomText) => {
 
     //TODO: REFACTOR TO RECIEVE TEXT ID FROM SERVER AND GET TEXT FROM SERVER
