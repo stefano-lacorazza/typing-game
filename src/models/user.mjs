@@ -11,6 +11,9 @@ class User {
     updateProgress(progress) {
         this.progress = progress;
     }
+    resetProgress() {
+        this.progress = 0;
+    }
 }
 
 export { User }

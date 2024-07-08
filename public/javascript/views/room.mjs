@@ -124,9 +124,26 @@ const startCountdown = ( randomText ) => {
         }
     }, 1000);
 
+}
 
+const restartGamePage = () => {
+
+    const readybtn = document.getElementById("ready-btn");
+    const timer = document.getElementById("timer");
+    const randomTextElement = document.getElementById("text-container");
+    const gameTimer = document.getElementById("game-timer");
+    
+
+
+    addClass(timer, 'display-none');
+    removeClass(readybtn, 'display-none');
+    addClass(randomTextElement, 'display-none');
+    addClass(gameTimer, 'display-none');
 
 }
+
+
+
 
 const insertRandomText = (randomText) => {
     const randomTextElement = document.getElementById("text-container");
@@ -144,26 +161,11 @@ const highlightText = (currentPosition) => {
     randomTextElement.innerHTML = beforeText + afterText;
 }
 
-const addTimeRemaining = () => {
-    let time = 120;
-    const gameTimer = document.getElementById("game-timer");
-    const timer = document.getElementById("game-timer-seconds");
-    timer.innerText = time;
-
-    removeClass(gameTimer, 'display-none');
-    const countdown = setInterval(() => {
-        timer.innerText = time;
-        time--;
-        if (time < 0) {
-            clearInterval(countdown);
-        }
-    }, 1000);
 
 
 
-}
 const getNumberOfUsersString = numberOfUsers => `${numberOfUsers} connected`;
 
 const removeRoomElement = name => document.querySelector(`.room[data-room-name='${name}']`)?.remove();
 
-export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage, startCountdown, highlightText, addTimeRemaining};
+export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage, startCountdown, highlightText, restartGamePage };

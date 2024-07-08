@@ -1,7 +1,7 @@
-import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown, highlightText, addTimeRemaining } from './views/room.mjs'
+import { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, addRoomsPage, removeGamePage, startCountdown, highlightText,restartGamePage } from './views/room.mjs'
 import { showInputModal } from './views/modal.mjs'
 import { appendUserElement, changeReadyStatus, setProgress, removeUserElement, emptyUserElement } from './views/user.mjs'
-
+import { createElement, addClass, removeClass } from './helpers/dom-helper.mjs'
 
 const username = sessionStorage.getItem('username');
 const rooms_page = document.getElementById('rooms-page');
@@ -131,7 +131,65 @@ const updateProgressAll = (users) => {
         setProgress({ username: user.username, progress: user.progress });
     });
 
+    if (users.every(user => user.progress === 100)) {
+        endGame();
+    }
+
 };
+
+const endGame = () => {
+    document.removeEventListener('keydown', activateKeyStrokes);
+    currentPosition = 0;
+    text = '';
+
+    
+    //show modal window
+
+    
+    console.log('end game'+currentRoom);
+    socket.emit('END_GAME', currentRoom); //TODO: unready everyone and restart progress
+    restartGamePage();
+
+
+};
+
+
+
+
+
+const addTimeRemaining = () => {
+    let time = 10;
+    const gameTimer = document.getElementById("game-timer");
+    const timer = document.getElementById("game-timer-seconds");
+    timer.innerText = time;
+
+    removeClass(gameTimer, 'display-none');
+    const countdown = setInterval(() => {
+        timer.innerText = time;
+        time--;
+        if (time < 0) {
+            clearInterval(countdown);
+            endGame();
+        }
+    }, 1000);
+
+
+
+}
+
+const leaveRoom = () => {
+    socket.emit('LEAVE_ROOM', currentRoom);
+    currentRoom = '';
+    let text = '';
+    let currentPosition = 0;
+    removeGamePage();
+    addRoomsPage();
+}
+
+
+
+
+
 
 
 socket.on('UPDATE_PLAYERS', addUserElements);

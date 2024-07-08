@@ -83,6 +83,27 @@ export default (io: Server) => {
         }
       }
     });
+
+    socket.on('END_GAME', (roomId: string) => {
+        console.log("end game received");
+        const room = rooms.find(room => room.id === roomId);
+        if (room) {
+            console.log("found room");
+            room.playerList.forEach(player => {
+                player.resetProgress();
+                player.toggleReady();
+                
+            });
+            io.to(room.id).emit("UPDATE_PLAYERS", room.playerList);
+            io.to(room.id).emit("UPDATE_PROGRESS_RESPONSE", room.playerList);
+        }
+        
+    });
+
+
+
+
+
 })};
 
 
