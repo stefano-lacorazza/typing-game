@@ -136,6 +136,28 @@ export default (io: Server) => {
         }
 
     });
+    socket.on('disconnect', () => {
+     //find room with user
+      const roomId = rooms.find(room => room.isUserInRoom(username));
+      if (roomId) {
+        const room = rooms.find(room => room.id === roomId.id);
+        if (room) {
+          room.removeUserFromList(username);
+          room.OneLessPlayer();
+          socket.leave(room.id);
+          io.to(room.id).emit("UPDATE_PLAYERS", room.playerList);
+          io.to(room.id).emit("UPDATE_PROGRESS_RESPONSE", room.playerList);
+          if (room.numberOfPlayers === 0) {
+              rooms.splice(rooms.indexOf(room), 1);
+          }
+          room.removeWinner(username);
+          io.emit("UPDATE_ROOMS", rooms);
+          if (room.allUsersReady() && room.numberOfPlayers > 1 ) {
+            io.to(room.id).emit("START_GAME", randomText());
+           }
+        }
+      }
+  });
 
 
 

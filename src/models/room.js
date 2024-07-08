@@ -40,6 +40,9 @@ class Room {
     this.playerList = this.playerList.filter((player) => player.username !== user)
   }
 
+  isUserInRoom(user) {
+        return this.playerList.some(player => player.username === user);
+    }
 
   allUsersReady() {
       return this.playerList.every(player => player.ready);
