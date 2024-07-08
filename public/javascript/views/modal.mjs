@@ -1,5 +1,7 @@
 import { createElement } from '../helpers/dom-helper.mjs';
 
+
+
 const showInputModal = ({ title, onChange = () => {}, onSubmit = () => {} }) => {
     const rootElement = document.querySelector('#root');
 
@@ -19,8 +21,9 @@ const showInputModal = ({ title, onChange = () => {}, onSubmit = () => {} }) => 
     rootElement.append(modalElement);
 
     submitButton.addEventListener('click', () => {
+        const inputValue = inputElement.value; // Get the current value of the input
         modalElement.remove();
-        onSubmit();
+        onSubmit(inputValue); // Pass the input value to the onSubmit callback
     });
     inputElement.addEventListener('change', e => onChange(e.target.value));
 };

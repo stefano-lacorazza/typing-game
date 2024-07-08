@@ -16,3 +16,12 @@
     padding: 0 15px;
     margin-left: 10px;
 }
+#logo {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+#root {
+    background-color: #009fbd;
+}

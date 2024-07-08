@@ -14,7 +14,10 @@ const onClickSubmitButton = () => {
     if (!inputValue) {
         return;
     }
+
+    
     sessionStorage.setItem('username', inputValue);
+    
     window.location.replace('/game');
 };
 
