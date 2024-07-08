@@ -97,13 +97,13 @@ const removeGamePage = () => {
 }
 
 
-const startCountdown = () => {
+const startCountdown = ( randomText ) => {
 
-    const countdownElement = document.getElementById("game-timer");
+    
     const readybtn = document.getElementById("ready-btn");
-    const timer = document.getElementById("game-timer-seconds");
+    const timer = document.getElementById("timer");
 
-    removeClass(countdownElement, 'display-none');
+    removeClass(timer, 'display-none');
     addClass(readybtn, 'display-none');
     
     let time = 5;
@@ -113,16 +113,76 @@ const startCountdown = () => {
         time--;
         if (time < 0) {
             clearInterval(countdown);
-            addClass(countdownElement, 'display-none');
+
+            addClass(timer, 'display-none');
+            insertRandomText("START WRITING...")
+            // one second delay
+            setTimeout(() => {
+                insertRandomText(randomText);
+            }, 1000);
+            
         }
     }, 1000);
 
+}
 
+const restartGamePage = () => {
+
+    const readybtn = document.getElementById("ready-btn");
+    const timer = document.getElementById("timer");
+    const randomTextElement = document.getElementById("text-container");
+    const gameTimer = document.getElementById("game-timer");
+    
+
+
+    addClass(timer, 'display-none');
+    removeClass(readybtn, 'display-none');
+    addClass(randomTextElement, 'display-none');
+    addClass(gameTimer, 'display-none');
 
 }
+
+
+
+
+const insertRandomText = (randomText) => {
+    const randomTextElement = document.getElementById("text-container");
+    removeClass(randomTextElement, 'display-none');
+    randomTextElement.innerText = randomText;
+}
+
+const highlightText = (currentPosition) => {
+    const randomTextElement = document.getElementById("text-container");
+    const text = randomTextElement.innerText;
+    let beforeText = text.substring(0, currentPosition);
+    let currentPositionChar = text.charAt(currentPosition);
+    const afterText = text.substring(currentPosition+1);
+
+    //underline the first character of currentPositionChar
+
+    currentPositionChar = `<span class="underline">${currentPositionChar}</span>`;
+
+
+    beforeText = `<span class="highlight">${beforeText}</span>`;
+    
+    randomTextElement.innerHTML = beforeText + currentPositionChar + afterText;
+}
+
+const toggleReadyButton = () => {
+    const readybtn = document.getElementById("ready-btn");
+    const readybtnText = readybtn.innerText;
+    if (readybtnText === "READY") {
+        readybtn.innerText = "UNREADY";
+    }
+    else {
+        readybtn.innerText = "READY";
+    }
+}
+
+
 
 const getNumberOfUsersString = numberOfUsers => `${numberOfUsers} connected`;
 
 const removeRoomElement = name => document.querySelector(`.room[data-room-name='${name}']`)?.remove();
 
-export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage, startCountdown};
+export { appendRoomElement, updateNumberOfUsersInRoom, removeRoomElement, emptyRoomElement, removeRoomsPage, addGamePage, removeGamePage, addRoomsPage, startCountdown, highlightText, restartGamePage, toggleReadyButton };

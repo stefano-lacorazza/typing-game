@@ -72,3 +72,11 @@
 .finished {
     background-color: greenyellow !important;
 }
+
+.highlight {
+    background-color: yellow !important;
+}
+
+.underline {
+    text-decoration: underline;
+}

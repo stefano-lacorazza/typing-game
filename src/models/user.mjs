@@ -2,14 +2,17 @@ class User {
     constructor(username) {
         this.username = username;
         this.ready = false;
-        this.keys = 0;
+        this.progress = 0;
     }
 
     toggleReady() {
         this.ready = !this.ready;
     }
-    addKey() {
-        this.keys += 1;
+    updateProgress(progress) {
+        this.progress = progress;
+    }
+    resetProgress() {
+        this.progress = 0;
     }
 }
 
