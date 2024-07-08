@@ -62,8 +62,6 @@ const addRoomsPage = () => {
     } else {
         console.error("Element with ID 'rooms-page' not found.");
     }
-
-
 }
 
 
@@ -99,7 +97,6 @@ const removeGamePage = () => {
 
 
 const startCountdown = ( randomText ) => {
-
     
     const readybtn = document.getElementById("ready-btn");
     const timer = document.getElementById("timer");
@@ -121,10 +118,8 @@ const startCountdown = ( randomText ) => {
             setTimeout(() => {
                 insertRandomText(randomText);
             }, 1000);
-            
         }
     }, 1000);
-
 }
 
 const restartGamePage = () => {
@@ -133,8 +128,6 @@ const restartGamePage = () => {
     const timer = document.getElementById("timer");
     const randomTextElement = document.getElementById("text-container");
     const gameTimer = document.getElementById("game-timer");
-    
-
 
     addClass(timer, 'display-none');
     removeClass(readybtn, 'display-none');
@@ -158,14 +151,8 @@ const highlightText = (currentPosition) => {
     let beforeText = text.substring(0, currentPosition);
     let currentPositionChar = text.charAt(currentPosition);
     const afterText = text.substring(currentPosition+1);
-
-    //underline the first character of currentPositionChar
-
     currentPositionChar = `<span class="underline">${currentPositionChar}</span>`;
-
-
     beforeText = `<span class="highlight">${beforeText}</span>`;
-    
     randomTextElement.innerHTML = beforeText + currentPositionChar + afterText;
 }
 

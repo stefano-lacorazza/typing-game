@@ -20,8 +20,6 @@ if (!username) {
     window.location.replace('/signin');
 }
 
-
-
 const onClickAddRoom = () => {
     showInputModal({
         title: 'Enter room name',
@@ -54,7 +52,6 @@ const addBackToRoomsOnClick = () => {
         removeGamePage();
         addRoomsPage();
     });
-
 }
 
 const updateRooms = rooms => {
@@ -64,9 +61,8 @@ const updateRooms = rooms => {
             appendRoomElement({ 
                 name: room.id, 
                 numberOfUsers: room.numberOfPlayers, 
-                onJoin: () => onClickJoin(room.id) // Pass room.id to onClickJoin
+                onJoin: () => onClickJoin(room.id) 
             });
-        console.log(room);
     });
 };
 
@@ -87,18 +83,13 @@ const addUserElements = users => {
                 isCurrentUser: false,
             });
         }
-        
     });
 };
 
 const addReadyButtonOnClick = () => {
     const readyButton = document.getElementById('ready-btn');
     readyButton.addEventListener('click', () => {
-
         toggleReadyButton();
-
-
-
         socket.emit('TOGGLE_READY', username, currentRoom);
     });
 };
@@ -112,21 +103,14 @@ const startGame = (randomText) => {
 
 const activateKeyStrokes = () => {
     document.addEventListener('keydown', (event) => {
-        console.log('event');
         let total = text.length;
-        if (event.key === text[currentPosition]) { // Check if the pressed key matches the current character
-            currentPosition++; // Move to the next character
-
+        if (event.key === text[currentPosition]) { 
+            currentPosition++; 
             let percentage = Math.floor((currentPosition / total) * 100);
             highlightText(currentPosition);
-
-
             socket.emit('UPDATE_PROGRESS', percentage, username, currentRoom);
-
             if (percentage == 100) {
-                //end keydown event
                 socket.emit('FINISHED', username, currentRoom);
-
             } 
         }
     });
@@ -136,36 +120,26 @@ const updateProgressAll = (users) => {
     users.forEach(user => {
         setProgress({ username: user.username, progress: user.progress });
     });
-    
-
-
 };
 
 const endGame = (winnerList) => {
     document.removeEventListener('keydown', activateKeyStrokes);
     currentPosition = 0;
     text = '';
-
     if (!winnerList) {
         winnerList = ['No winner']
     }
-    //show modal window
     showResultsModal({ usersSortedArray : winnerList, onClose : () => {
-        socket.emit('END_GAME', currentRoom); //TODO: unready everyone and restart progress
+        socket.emit('END_GAME', currentRoom); 
         restartGamePage();
-
     } })
-
 };
-
-
 
 const addTimeRemaining = () => {
     let time = SECONDS_FOR_GAME;
     const gameTimer = document.getElementById("game-timer");
     const timer = document.getElementById("game-timer-seconds");
     timer.innerText = time;
-
     removeClass(gameTimer, 'display-none');
     const countdown = setInterval(() => {
         timer.innerText = time;
@@ -175,9 +149,6 @@ const addTimeRemaining = () => {
             endGame();
         }
     }, 1000);
-
-
-
 }
 
 const leaveRoom = () => {
@@ -189,28 +160,27 @@ const leaveRoom = () => {
     addRoomsPage();
 }
 
-
-
-
-
-
 socket.on('INITIAL_CONFIG', (config) => {
     MAXIMUM_USERS_FOR_ONE_ROOM = Number(config.MAXIMUM_USERS_FOR_ONE_ROOM);
     SECONDS_TIMER_BEFORE_START_GAME = Number(config.SECONDS_TIMER_BEFORE_START_GAME);
     SECONDS_FOR_GAME = Number(config.SECONDS_FOR_GAME);
 });
+
 socket.on('UPDATE_PLAYERS', addUserElements);
+
 socket.on('UPDATE_ROOMS', updateRooms);
+
 socket.on('ROOM_CREATED', (roomName) => {
     currentRoom = roomName;
     onClickJoin(roomName);
 });
+
 socket.on('ROOM_NOT_CREATED', () => {
     showMessageModal({ message: 'Room already exists' });
 });
-socket.on('START_GAME', (randomText) => {
 
-    //TODO: REFACTOR TO RECIEVE TEXT ID FROM SERVER AND GET TEXT FROM SERVER
+
+socket.on('START_GAME', (randomText) => {
     startCountdown(randomText);
     setTimeout(() => startGame(randomText), 6000); 
 });
@@ -223,9 +193,6 @@ socket.on('USERNAME_ALREADY_EXISTS', () => {sessionStorage.clear();
 });
 
 
-
-
 room_btn.addEventListener('click', onClickAddRoom);
-
 
 export { SECONDS_TIMER_BEFORE_START_GAME };

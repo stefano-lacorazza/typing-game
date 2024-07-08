@@ -19,7 +19,6 @@ class Room {
 
   OneLessPlayer() {
       this.numberOfPlayers -= 1;
-      this.state = 'open';
   }
 
   isOpen() {
@@ -33,9 +32,11 @@ class Room {
   close() {
       this.state = 'closed';
   }
+
   appendUsertoList (user){
     this.playerList.push(new User(user))
   }
+
   removeUserFromList(user){
     this.playerList = this.playerList.filter((player) => player.username !== user)
   }
@@ -49,12 +50,10 @@ class Room {
   }
 
   addWinner(winner) {
-    // add winner to list of not already in list
     if (!this.winnerList.includes(winner))
     {
         this.winnerList.push(winner);
     }
-     
   }
 
   removeWinner(winner) {
