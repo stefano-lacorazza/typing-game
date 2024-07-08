@@ -1,4 +1,5 @@
 import { createElement, addClass, removeClass } from '../helpers/dom-helper.mjs';
+import { SECONDS_TIMER_BEFORE_START_GAME } from '../game.mjs';
 
 
 
@@ -106,7 +107,7 @@ const startCountdown = ( randomText ) => {
     removeClass(timer, 'display-none');
     addClass(readybtn, 'display-none');
     
-    let time = 5;
+    let time =  Number(SECONDS_TIMER_BEFORE_START_GAME);
     // Update the count down every 1 second
     const countdown = setInterval(() => {
         timer.innerText = time;

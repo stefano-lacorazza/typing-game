@@ -1,5 +1,5 @@
 import { Server, Socket } from 'socket.io';
-import Room from '../models/room.mjs';
+import Room from '../models/room.js';
 import * as config from './config.js';
 import { texts } from '../data.js';
 
@@ -13,6 +13,8 @@ const getCurrentRoomId = (socket: Socket): string | undefined =>
 export default (io: Server) => {
   io.on('connection', (socket: Socket) => {
     const username = socket.handshake.query.username as string;
+    
+    socket.emit("INITIAL_CONFIG", { MAXIMUM_USERS_FOR_ONE_ROOM: config.MAXIMUM_USERS_FOR_ONE_ROOM, SECONDS_TIMER_BEFORE_START_GAME: config.SECONDS_TIMER_BEFORE_START_GAME, SECONDS_FOR_GAME: config.SECONDS_FOR_GAME});
 
     socket.emit("UPDATE_ROOMS", rooms);
 
@@ -143,3 +145,5 @@ export default (io: Server) => {
 const randomText = () => {
   return texts[Math.floor(Math.random() * texts.length)];
 }
+
+

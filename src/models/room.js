@@ -1,4 +1,6 @@
 import {User } from './user.mjs'
+import * as config from '../socket/config.js'
+
 class Room {
   constructor(id, numberOfPlayers = 1, state = 'open', username) {
       this.id = id;
@@ -10,7 +12,7 @@ class Room {
 
   addPlayer() {
       this.numberOfPlayers += 1;
-      if (this.numberOfPlayers >= 3) {
+      if (this.numberOfPlayers >= config.MAXIMUM_USERS_FOR_ONE_ROOM) {
           this.state = 'closed';
       }
   }
